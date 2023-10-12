@@ -21,7 +21,6 @@ const Author = ({value: author}: { value: String }) => (
     <Text style={{fontSize: 20, marginTop: 15}}>{author}</Text>
 );
 
-// @ts-ignore
 const Price = ({value: price}: { value?: number }) => (
     <Text style={{fontSize: 24, marginTop: 10}}>{globalNumberFormat.format(price || 0)}</Text>
 );

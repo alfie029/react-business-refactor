@@ -1,33 +1,18 @@
-import React, {useState, useEffect} from "react";
-import {Container, Text, Button, Name, Author, Price} from "./Common";
-import {AsyncLoadingState, BookDetailModel} from "../models";
-
+import React from "react";
+import {Container, Text, Button, Name, Author, Price} from "./commons";
+import {AsyncLoadingState} from "../models/views";
+import useBookDetail from "../hooks/useBookDetail";
 
 interface BookDetailViewProps {
     isbn: String,
 }
 
-
 const BookDetailView = ({isbn}: BookDetailViewProps) => {
-    const [loadingState, setLoadingState] = useState<AsyncLoadingState>(AsyncLoadingState.Loading);
-    const [book, setBook] = useState<BookDetailModel | null>();
+    const {loadingState, book} = useBookDetail(isbn);
 
-    useEffect(() => {
-        const fetchBookDetailAsync = async () => {
-            const response = await fetch(`http://localhost:3000/books/${isbn}.json`);
-            return await response.json();
-        };
-        fetchBookDetailAsync()
-            .then((book) => {
-                setBook(book);
-                setLoadingState(AsyncLoadingState.Loaded)
-            })
-            .catch(() => setLoadingState(AsyncLoadingState.Error));
-    }, [isbn]);
-
-    if (loadingState == AsyncLoadingState.Loading) {
+    if (loadingState === AsyncLoadingState.Loading) {
         return <Text>Loading...</Text>
-    } else if (loadingState == AsyncLoadingState.Error) {
+    } else if (loadingState === AsyncLoadingState.Error) {
         return <Text>Error</Text>
     }
 
@@ -43,7 +28,7 @@ const BookDetailView = ({isbn}: BookDetailViewProps) => {
         <Container>
             <Name value={book.name}/>
             <Author value={book.author}/>
-            <Price value={book.discountPrice || book.price}/>
+            <Price value={book.price}/>
             <Button onClick={onSubmit}>Buy</Button>
         </Container>
     );

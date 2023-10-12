@@ -1,8 +1,7 @@
-export interface BookDetailModel {
+export interface BookDetailViewModel {
     name: String,
     author: String,
-    discountPrice?: number,
-    price?: number,
+    price: number,
 }
 
 export enum AsyncLoadingState {
